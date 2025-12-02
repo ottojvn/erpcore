@@ -1,56 +1,102 @@
-# Enterprise Resource Planning (ERP) Core - Supply Chain Module
+# ERP Core - Supply Chain Module
 
-## Visão Geral do Projeto
-Este repositório contém a implementação de um núcleo de ERP (Enterprise Resource Planning) focado no módulo de Supply Chain (Cadeia de Suprimentos) e Regras Fiscais.
+Enterprise Resource Planning system focused on Supply Chain and Tax Engine modules.
 
-O objetivo deste projeto é demonstrar a capacidade de engenharia de software na construção de soluções corporativas de alta complexidade, robustez e escalabilidade. O sistema foi desenhado para simular desafios reais enfrentados por grandes players do mercado de software de gestão (como Totvs e LG Lugar de Gente), priorizando integridade transacional, performance de banco de dados e arquitetura desacoplada.
+## Overview
 
-## Metodologia de Desenvolvimento
-Este projeto utiliza uma metodologia de "IA Supervisionada". O GitHub Copilot atua como Tech Lead, definindo tarefas, revisando implementações e garantindo a aderência aos padrões arquiteturais definidos. O desenvolvedor atua como Engenheiro de Software, responsável pela implementação técnica, tomada de decisão arquitetural e resolução de problemas complexos.
+This repository implements an enterprise-grade ERP core designed to handle complex supply chain operations, multi-warehouse inventory management, and dynamic tax calculations. The system demonstrates real-world challenges faced by enterprise software vendors, prioritizing transactional integrity, database performance, and decoupled architecture.
 
-## Arquitetura e Engenharia ("Strategic Overengineering")
-O projeto adota intencionalmente uma arquitetura sofisticada para demonstrar domínio técnico sobre padrões de design enterprise, justificando a complexidade pela necessidade de manutenção a longo prazo e testabilidade.
+### Key Features
 
-### Stack Tecnológica
-* **Core:** .NET 8 (C#)
-* **Database:** SQL Server (Linux/Docker container)
-* **Orm/Data Access:** Abordagem Híbrida
-    * *Entity Framework Core:* Para operações de comando (Create, Update, Delete) e mapeamento de domínio.
-    * *Dapper / Raw SQL:* Para consultas de alta performance e relatórios complexos, simulando a exigência de mercado por otimização de queries.
+- **Transactional Inventory Management:** Stock movements with optimistic/pessimistic concurrency control
+- **Dynamic Tax Engine:** Rule-based tax calculation simulating Brazilian tax complexity
+- **Business Intelligence Reports:** Optimized analytical queries (ABC Curve, Inventory Turnover) using native SQL
 
-### Padrões Adotados
-* **Clean Architecture:** Separação estrita de responsabilidades em camadas (Domain, Application, Infrastructure, Presentation).
-* **Domain-Driven Design (DDD):** Uso de Entidades Ricas, Value Objects, Aggregates e Domain Events para encapsular regras de negócio complexas (ex: validação fiscal, bloqueio de estoque).
-* **CQRS (Command Query Responsibility Segregation):** Separação lógica entre operações de leitura e escrita para otimização de performance.
-* **Repository & Unit of Work Patterns:** Abstração da persistência de dados.
-* **Result Pattern:** Tratamento de erros funcional, evitando o uso excessivo de exceções para fluxo de controle.
+## Quick Start
 
-## Funcionalidades do Módulo
-1.  **Gestão de Estoque Transacional:** Controle de movimentações com concorrência otimista e pessimista.
-2.  **Motor de Regras Fiscais:** Cálculo dinâmico de impostos baseados em parametrização, simulando a complexidade tributária brasileira.
-3.  **Relatórios de Inteligência de Negócio:** Consultas analíticas otimizadas (Curva ABC, Giro de Estoque) executadas via SQL nativo.
+### Prerequisites
 
-## Configuração do Ambiente
+- .NET SDK 8.0+
+- Docker & Docker Compose
+- SQL Server Management Studio (SSMS) or Azure Data Studio
 
-### Pré-requisitos
-* .NET SDK 8.0+
-* Docker & Docker Compose
-* SQL Server Management Studio (SSMS) ou Azure Data Studio
+### Setup
 
-### Execução
-1.  Clone o repositório.
-2.  Suba a infraestrutura de banco de dados:
-    ```bash
-    docker-compose up -d
-    ```
-3.  Aplique as migrações iniciais (se aplicável) ou execute os scripts de init do banco:
-    ```bash
-    dotnet ef database update
-    ```
-4.  Execute a aplicação:
-    ```bash
-    dotnet run --project src/ErpCore.Api
-    ```
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd erpcore
+   ```
 
-## Licença
-Este projeto é destinado a fins de portfólio acadêmico e profissional.
+2. **Start SQL Server (Docker):**
+   ```bash
+   docker-compose up -d
+   ```
+   
+   This starts SQL Server 2022 accessible at `localhost,1433`.
+   
+   > **Note:** Default credentials for local development are defined in `docker-compose.yml`. Do not use these credentials in production.
+
+3. **Apply database migrations:**
+   ```bash
+   dotnet ef database update --project src/Infrastructure
+   ```
+
+4. **Run the application:**
+   ```bash
+   dotnet run --project src/Api
+   ```
+
+5. **Run tests:**
+   ```bash
+   dotnet test
+   ```
+
+## Architecture
+
+This project follows **Clean Architecture** with **Domain-Driven Design (DDD)** principles.
+
+```
+src/
+├── Api/              # Presentation - Controllers, Middlewares, DI
+├── Application/      # Use Cases - Commands, Queries, Handlers
+├── Domain/           # Core - Entities, Value Objects, Domain Services
+└── Infrastructure/   # External - EF Core, Dapper, Repositories
+```
+
+### Technology Stack
+
+| Layer | Technology |
+|-------|------------|
+| Runtime | .NET 8 / C# 12 |
+| Database | SQL Server 2022 (Docker) |
+| ORM (Commands) | Entity Framework Core 8 |
+| Query (Reports) | Dapper / Raw SQL |
+| Validation | FluentValidation |
+| Mediator | MediatR |
+| Testing | xUnit, Moq |
+
+### Design Patterns
+
+- **CQRS:** Separate read/write stacks for performance optimization
+- **Repository & Unit of Work:** Data access abstraction
+- **Result Pattern:** Functional error handling without exceptions
+- **Domain Events:** Decoupled side effects
+
+## Documentation
+
+| Document | Description |
+|----------|-------------|
+| [CONTRIBUTING.md](./CONTRIBUTING.md) | Development setup and contribution guidelines |
+| [docs/DOMAIN_MODEL.md](./docs/DOMAIN_MODEL.md) | Domain entities, aggregates, and business rules |
+| [PROJECT_SPEC.md](./PROJECT_SPEC.md) | Functional requirements specification |
+| [TECH_STACK.md](./TECH_STACK.md) | Technical architecture decisions |
+| [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) | Implementation phases and task sequence |
+
+## Development Methodology
+
+This project uses an "AI-Supervised" methodology where GitHub Copilot acts as a Tech Lead, defining tasks, reviewing implementations, and ensuring adherence to architectural standards. The developer acts as the Software Engineer, responsible for technical implementation and architectural decisions.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see [LICENSE](./LICENSE) for details.
