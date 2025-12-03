@@ -55,8 +55,8 @@ For detailed setup instructions and architecture guidelines, see [CONTRIBUTING.m
 |----------|-------------|
 | [CONTRIBUTING.md](./CONTRIBUTING.md) | Developer guide: setup, architecture, technology stack, and contribution guidelines |
 | [docs/DOMAIN_MODEL.md](./docs/DOMAIN_MODEL.md) | Domain entities, aggregates, and business rules |
-| [PROJECT_SPEC.md](./PROJECT_SPEC.md) | Functional and non-functional requirements specification |
-| [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) | Implementation phases and task sequence |
+| [PROJECT_SPEC.md](./PROJECT_SPEC.md) | Functional and non-functional requirements specification (Portuguese) |
+| [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) | Implementation phases and task sequence (Portuguese) |
 
 ## Development Methodology
 
