@@ -1,6 +1,6 @@
-# Domain Model & Business Rules
+# Domain Model
 
-This document defines the core business domain, entities, and rules for the ERP Core Supply Chain Module.
+This document defines the core business domain entities and aggregates for the ERP Core Supply Chain Module.
 
 ## 1. Business Context
 
@@ -94,34 +94,4 @@ Coordinates stock movements with concurrency control.
 **Responsibilities:**
 - Balance verification before deduction
 - Weighted average cost recalculation
-- Optimistic/pessimistic locking implementation
-
-## 4. Non-Functional Requirements
-
-### 4.1 Data Integrity
-- All financial and inventory operations must be ACID compliant (RNF001)
-- Failures in tax calculation must rollback stock reservations
-
-### 4.2 Performance
-- Inventory position reports must execute in under 200ms using optimized SQL (RNF002)
-- Read operations should use Dapper/Raw SQL, not Entity Framework
-
-### 4.3 Audit
-- Critical entity changes (Price, Stock) must generate audit logs with UserId, Timestamp, OldValue, NewValue (RNF004)
-
-## 5. Reporting Requirements
-
-The following reports must be implemented using advanced SQL (Window Functions, CTEs):
-
-| Report | Description | SQL Features |
-|--------|-------------|--------------|
-| ABC Curve | Product classification by revenue relevance (A=80%, B=15%, C=5%) | RANK(), PARTITION BY |
-| Inventory Turnover | Analysis of product exit velocity vs. average balance | Aggregations, CTEs |
-| Kardex Extract | Chronological and sequential view of all entries and exits for a specific SKU | Pagination, Ordering |
-
-## 6. Architecture Constraints
-
-1. **Domain Layer Independence:** No framework dependencies (EF Core, Dapper) in Domain layer
-2. **Rich Domain Models:** Entities must contain business methods, not just getters/setters
-3. **Separation of Concerns:** Controllers handle HTTP, Services orchestrate, Domain enforces rules
-4. **Result Pattern:** Use Result objects for validation errors instead of exceptions
+- Concurrency control implementation

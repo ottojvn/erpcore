@@ -14,7 +14,7 @@ Este documento define a sequência lógica de implementação do ERP Core. O Git
     * `ErpCore.Infrastructure` (Class Library)
     * `ErpCore.Api` (Web API)
     * `ErpCore.Tests` (xUnit)
-2.  **Task 0.2:** Configurar `docker-compose.yml` para subir o SQL Server 2022.
+2.  **Task 0.2:** Configurar `docker-compose.yml` para subir o container do banco de dados.
 3.  **Task 0.3:** Configurar injeção de dependência básica e Swagger na API.
 
 ---
@@ -34,10 +34,10 @@ Este documento define a sequência lógica de implementação do ERP Core. O Git
 ---
 
 ## FASE 2: Persistência e Infraestrutura de Dados
-**Objetivo:** Mapear o domínio para o SQL Server utilizando EF Core para escrita e preparar o terreno para alta performance.
+**Objetivo:** Mapear o domínio para o banco de dados utilizando EF Core para escrita e preparar o terreno para alta performance.
 
 1.  **Task 2.1 - Mapeamento ORM:** Implementar `IEntityTypeConfiguration` para cada entidade do domínio.
-    * *Restrição:* Usar Fluent API estrita. Definir `VARCHAR`, `DECIMAL(18,4)`, Índices e Foreign Keys explicitamente.
+    * *Restrição:* Usar Fluent API estrita. Definir tipos de dados, índices e chaves estrangeiras explicitamente.
 2.  **Task 2.2 - Contexto e Migrations:** Configurar `ErpContext`, gerar e aplicar a primeira Migration.
 3.  **Task 2.3 - Repositórios (Write Side):** Implementar o padrão Repository (`IProductRepository`, `IStockRepository`) usando EF Core.
 4.  **Task 2.4 - Unit of Work:** Implementar controle transacional.
@@ -48,7 +48,7 @@ Este documento define a sequência lógica de implementação do ERP Core. O Git
 **Objetivo:** Implementar os Casos de Uso que alteram o estado do sistema.
 
 1.  **Task 3.1 - Handlers de Cadastro:** Implementar Commands para `CreateProduct` e `UpdateProductPrice` usando MediatR.
-2.  **Task 3.2 - Pipeline de Validação:** Configurar *FluentValidation* para validar os DTOs de entrada antes de atingir o domínio.
+2.  **Task 3.2 - Pipeline de Validação:** Configurar FluentValidation para validar os DTOs de entrada antes de atingir o domínio.
 3.  **Task 3.3 - Motor de Movimentação:** Implementar o Use Case `RegisterStockMovement`.
     * Este Handler deve coordenar a regra de negócio complexa de verificação de saldo antes da baixa.
 4.  **Task 3.4 - API Endpoints (Escrita):** Criar Controllers para expor os Commands via HTTP POST/PUT.
@@ -56,7 +56,7 @@ Este documento define a sequência lógica de implementação do ERP Core. O Git
 ---
 
 ## FASE 4: O Motor Fiscal (Complexidade de Engenharia)
-**Objetivo:** Implementar o cálculo dinâmico de impostos, o coração do "Overengineering".
+**Objetivo:** Implementar o cálculo dinâmico de impostos.
 
 1.  **Task 4.1 - Entidades Fiscais:** Modelar `TaxRule` (Regra Fiscal), `TaxZone` (Estado/Região) e `Ncm`.
 2.  **Task 4.2 - Serviço de Domínio (Tax Calculator):** Criar um `Domain Service` que recebe um Pedido e calcula os impostos baseados nas regras vigentes.
@@ -70,7 +70,7 @@ Este documento define a sequência lógica de implementação do ERP Core. O Git
 
 1.  **Task 5.1 - Stack de Leitura:** Configurar Dapper na camada de Infraestrutura.
 2.  **Task 5.2 - Relatório Kardex:** Criar query SQL crua (Raw SQL) para extrair o extrato de movimentação de um produto, paginado no banco.
-3.  **Task 5.3 - Dashboard de Vendas (Curva ABC):** Implementar query complexa utilizando Window Functions (`RANK()`, `PARTITION BY`) para classificar produtos.
+3.  **Task 5.3 - Dashboard de Vendas (Curva ABC):** Implementar query complexa utilizando Window Functions para classificar produtos.
 4.  **Task 5.4 - API Endpoints (Leitura):** Expor os relatórios via HTTP GET.
 
 ---

@@ -21,8 +21,6 @@ Do not write complete implementations, full classes, or copy-paste code blocks t
 
 ## Environment Context
 
-- **IDE:** Visual Studio 2022 Professional
-- **Database:** SQL Server 2022 (Docker Container at `localhost,1433`)
 - **Framework:** .NET 8/9 (C# 12)
 - **ORM:** Entity Framework Core (Commands) + Dapper (Queries)
 
@@ -30,7 +28,7 @@ Do not write complete implementations, full classes, or copy-paste code blocks t
 
 Always refer to these documents for project context:
 - `PROJECT_SPEC.md` - Business rules and functional requirements
-- `TECH_STACK.md` - Technical constraints and patterns
+- `CONTRIBUTING.md` - Technical constraints, patterns, and architecture standards
 - `LEARNING_ROADMAP.md` - Task sequence and implementation phases
 - `docs/DOMAIN_MODEL.md` - Domain entities and aggregates
 
