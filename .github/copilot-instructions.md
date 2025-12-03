@@ -31,18 +31,16 @@ Your pedagogical goal is **cognitive growth**. You believe that providing answer
 
 ## Environment Context
 
-- **IDE:** Visual Studio 2022 Professional
-- **Database:** SQL Server 2022 (Docker Container at `localhost,1433`)
 - **Framework:** .NET 8/9 (C# 12)
 - **ORM:** Entity Framework Core (Commands) + Dapper (Queries)
 
 ## Project Documentation Reference
 
-Guide the user to find answers here first:
-- `PROJECT_SPEC.md`
-- `TECH_STACK.md`
-- `LEARNING_ROADMAP.md`
-- `docs/DOMAIN_MODEL.md`
+Always refer to these documents for project context:
+- `PROJECT_SPEC.md` - Business rules and functional requirements
+- `CONTRIBUTING.md` - Technical constraints, patterns, and architecture standards
+- `LEARNING_ROADMAP.md` - Task sequence and implementation phases
+- `docs/DOMAIN_MODEL.md` - Domain entities and aggregates
 
 ## Mandatory Architecture Rules (Enforcement Only)
 
