@@ -5,17 +5,17 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8D403A9A-813D-4235-A2BF-D0CD80ED53A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{3CE70426-EDC3-452B-8091-8B6CC2E34059}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpCore.Domain", "src\Domain\ErpCore.Domain.csproj", "{3CE70426-EDC3-452B-8091-8B6CC2E34059}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "src\Application\Application.csproj", "{D457BAC1-A636-487E-A330-FC3A39E6762C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpCore.Application", "src\Application\ErpCore.Application.csproj", "{D457BAC1-A636-487E-A330-FC3A39E6762C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{D8E05390-3590-494D-ADB2-9AE7E2836404}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpCore.Infrastructure", "src\Infrastructure\ErpCore.Infrastructure.csproj", "{D8E05390-3590-494D-ADB2-9AE7E2836404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\Api\Api.csproj", "{13C92366-83BC-4993-AB6E-C863D0BE401D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpCore.Api", "src\Api\ErpCore.Api.csproj", "{13C92366-83BC-4993-AB6E-C863D0BE401D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{67B93ACC-317A-418E-8D46-C979468E2DBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests\Tests.csproj", "{4AE14B26-0D5E-4A3C-8FA7-4DE272AC1AEC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErpCore.Tests", "tests\Tests\ErpCore.Tests.csproj", "{4AE14B26-0D5E-4A3C-8FA7-4DE272AC1AEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

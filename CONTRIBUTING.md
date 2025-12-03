@@ -1,171 +1,152 @@
-# Contributing to ERP Core
+# Contributing to ERP Core & Expansion
 
-Thank you for your interest in contributing to ERP Core. This document serves as the comprehensive Developer Guide, covering setup, architecture standards, technology stack, and contribution workflow.
+Thank you for your interest in contributing to ERP Core. This document serves as the comprehensive Developer Guide.
 
-## Development Environment Setup
+**Project Phases:**
 
-### Prerequisites
+1. **Core Phase (Current):** Focus on building the modular monolith backend (.NET 10).
+2. **Expansion Phase (Future):** Evolution into a Full Stack, Cloud-Native, and Event-Driven system.
 
-- **.NET SDK:** Version 8.0 or higher
-- **IDE:** Any C#-compatible IDE or editor
-- **Docker & Docker Compose:** For running the database container
-- **SQL Client:** Any SQL client capable of connecting to SQL Server
+> **Important:** Contributions to the **Expansion Phase** should only commence after the Core Phase meets its "Definition of Done" as outlined in [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md).
 
-### Database Setup
+---
+
+## 1. Development Environment Setup
+
+### 1.1. Core Phase Prerequisites (Required Immediately)
+
+- **.NET SDK:** Version 10.0 or higher
+- **IDE:** Visual Studio 2026, VS Code, or Rider
+- **Docker & Docker Compose:** For running SQL Server
+- **SQL Client:** SSMS, DBeaver, or Visual Studio Code with MSSQL extension.
+
+### 1.2. Expansion Phase Prerequisites (Future Use)
+
+- **Node.js & npm:** LTS Version (for Frontend Expansion)
+- **Python:** 3.14+ (for Data/IoT Expansion)
+- **Cloud CLI:** AWS CLI or Azure CLI (for DevOps Expansion)
+- **Terraform:** For Infrastructure as Code
+
+### 1.3. Database Setup (Core)
 
 The project uses SQL Server running in a Docker container.
 
 1. **Start the database container:**
-   ```bash
-   docker-compose up -d
-   ```
 
-2. **Connection Details:**
-   - See `docker-compose.yml` for local development configuration
-   - Database is created via EF Core migrations
-   
-   > **Note:** The credentials in `docker-compose.yml` are for local development only. Do not use them in production environments.
+    ```bash
+    docker-compose up -d
+    ```
 
-3. **Apply database migrations:**
-   ```bash
-   dotnet ef database update --project src/Infrastructure
-   ```
+2. **Apply database migrations:**
 
-### Running the Application
+    ```bash
+    dotnet ef database update --project src/Infrastructure
+    ```
+
+### 1.4. Running the Application
 
 ```bash
 # Build the solution
 dotnet build
 
-# Run the API
+# Run the API (Core)
 dotnet run --project src/Api
 
-# Run tests
+# Run Tests
 dotnet test
 ```
 
-## Architecture
+## 2. Architecture Standards
 
-This project follows **Clean Architecture** with **Domain-Driven Design (DDD)** principles, prioritizing maintainability, testability, and performance.
+The project follows **Clean Architecture** with **Domain-Driven Design (DDD)**. In the Expansion Phase, this architecture evolves to support Event-Driven patterns.
 
-### Project Structure
-
-```
-src/
-├── Api/              # Presentation layer - Controllers, Middlewares, DI
-├── Application/      # Use Cases - Commands, Queries, Handlers, DTOs
-├── Domain/           # Core - Entities, Value Objects, Domain Services
-└── Infrastructure/   # External - EF Core, Dapper, Repositories
-
-tests/
-└── Tests/            # Unit and Integration tests
-```
-
-### Layer Responsibilities
+### 2.1. Core Architecture (Monolith)
 
 | Layer | Responsibility | Dependencies |
-|-------|----------------|--------------|
-| **Domain** | Entities, Value Objects, Enums, Repository Interfaces, Domain Exceptions | None (zero external framework dependencies) |
-| **Application** | Use Cases, orchestration, input validation, transaction coordination. Implements CQRS pattern. | Domain |
-| **Infrastructure** | Repository implementations, EF Core configuration, Dapper queries, external service integrations | Domain, Application |
-| **Api** | RESTful Controllers, Middlewares, Error handling, Dependency Injection configuration | Application, Infrastructure |
+| ----- | -------------- | ------------ |
+| **Domain** | Entities, Value Objects, Logic | None |
+| **Application** | Use Cases (CQRS), Orchestration | Domain |
+| **Infrastructure** | EF Core, Dapper, External Services | Domain, Application |
+| **Api** | Controllers | Middlewares |
 
-### Key Architectural Principles
+### 2.2. Expansion Architecture (Distributed)
 
-1. **Dependencies point inward** - Domain has no external dependencies
-2. **Rich Domain Models** - Entities contain business logic, not just data (no anemic models)
-3. **CQRS** - Commands (EF Core for writes) separated from Queries (Dapper/Raw SQL for reads)
-4. **Result Pattern** - Use Result objects instead of exceptions for flow control
+During the Expansion Phase, the system introduces:
 
-### Design Patterns
+- **Frontend Layer:** SPA (Single Page Application) communicating via REST.
+- **Worker Services:** Background services for asynchronous processing (e.g., Tax Calculation).
+- **Data Pipeline:** Python scripts for ETL and Analytics.
 
-The following patterns are mandatory:
+## 3. Technology Stack
 
-- **Repository Pattern:** Abstraction for data access
-- **Unit of Work:** Atomic transactions across multiple repositories
-- **Domain Events (Notification Pattern):** Decoupled side effects
-- **Result Pattern:** Error handling without exceptions for validation
-
-## Technology Stack
-
-### Core Technologies
+### 3.1. Core Stack (Backend)
 
 | Component | Technology |
-|-----------|------------|
-| Platform | .NET 8 (LTS) |
-| Language | C# 12 |
-| Database | SQL Server (containerized) |
-| ORM (Commands) | Entity Framework Core 8 (Fluent API only, no Data Annotations) |
-| Queries (Reports) | Dapper / Raw SQL |
-| Migrations | EF Core Migrations |
-
-### Libraries
-
-| Purpose | Library |
-|---------|---------|
-| Mediator | MediatR |
+| --------- | ---------- |
+| Platform | .NET 10 (LTS) |
+| Language | C# 14 |
+| ORM (Write) | Entity Framework Core 10 |
+| ORM (Read) | Dapper |
+| Database | SQL Server (Containerized) |
 | Validation | FluentValidation |
 | Logging | Serilog |
-| Mapping | AutoMapper (restricted to simple query projections) |
 
-### Testing
+### 3.2. Expansion Stack (Planned)
 
-| Component | Technology |
-|-----------|------------|
-| Framework | xUnit |
-| Mocking | Moq |
-| Data Generation | Bogus |
+| Expansion Module | Technology | Purpose |
+| ---------------- | ---------- | ------- |
+| Frontend | Angular or React | Web Interface / Backoffice |
+| DevOps | GitHub Actions | CI/CD Pipelines |
+| Infrastructure | Terraform / Docker | IaC and Cloud Provisioning |
+| Messaging | RabbitMQ / Kafka | Asynchronous Event Bus
+| Data/IoT | Python 3.x | ETL Scripts and IoT Simulation |
 
-## Code Standards
+## 4. Code Standards
 
-### Language
+### 4.1. General Rules
 
-- **Code:** All code (variables, classes, methods, comments) must be in **English**
-- **Documentation:** Business documentation and commits may be in **Portuguese**
+- **Language:** Code must be in **English**. Commits/Docs may be in Portuguese.
+- **Null Safety:** Enable ```<Nullable>enable</Nullable>```. Handle nulls explicitly.
+- **Async/Await:** Mandatory for all I/O operations.
 
-### Naming Conventions
+### 4.2. C# Conventions (Core)
 
 - **Classes/Methods:** PascalCase
-- **Variables/Parameters:** camelCase
-- **Constants:** UPPER_SNAKE_CASE or PascalCase
+- **Variables:** camelCase
+- **Interfaces:** IPascalCase
 
-### Async/Await
+### 4.3. Expansion Conventions (Future)
 
-All I/O operations (database, file, network) must use async/await patterns.
+- **TypeScript (Frontend):** Follow strict typing. Use defined ESLint rules.
+- **Python (Data):** Follow PEP 8 standards.
+- **Terraform:** Follow HashiCorp recommended naming conventions.
 
-### Null Safety
+## 5. Testing Strategy
 
-Nullable Reference Types are enabled (`<Nullable>enable</Nullable>`). Handle nulls explicitly.
+### 5.1. Core Testing
 
-### Code Quality
+- **Unit Tests (xUnit):** Required for all Domain logic.
+- **Integration Tests:** Required for Repositories and custom SQL queries.
 
-- No "magic numbers" or "magic strings" - use constants or enums
-- No business logic in Controllers
-- No database access from Domain layer
-- Use projections for read queries; avoid excessive `Include()` in EF Core
+### 5.2. Expansion Testing
 
-## Testing Requirements
+- **Frontend:** Unit tests for Components; E2E tests for critical flows (Cypress/Playwright).
+- **Infrastructure:** ```terraform validate``` and plan review.
+- **Data:** Unit tests for Python ETL logic.
 
-- **Unit Tests:** Required for all domain logic and business rules
-- **Integration Tests:** Required for repositories and SQL queries
-- **Scope:**
-  - Unit Tests: Focus on business rules and entities
-  - Integration Tests: Focus on repositories and SQL queries
+## 6. Pull Request & Workflow
 
-## Pull Request Process
+1. **Branching:** Create feature branches from main.
+2. **Phase Check:** Ensure you are working on tasks allowed by the current phase in LEARNING_ROADMAP.md.
+3. **Verification:**
 
-1. Create a feature branch from `main`
-2. Implement your changes following the architecture guidelines
-3. Ensure all tests pass: `dotnet test`
-4. Ensure code compiles without warnings
-5. Submit PR with clear description of changes
+- Code compiles without warnings.
+- ```dotnet test``` passes (Core).
+- Relevant linters pass (Expansion).
+- **Submission:** Submit PR with a clear description of changes.
 
-## Learning Path
+# 7. Documentation References
 
-If you're new to the project, follow the implementation phases defined in [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md).
-
-## Documentation
-
-- [PROJECT_SPEC.md](./PROJECT_SPEC.md) - Business requirements
-- [docs/DOMAIN_MODEL.md](./docs/DOMAIN_MODEL.md) - Domain model documentation
-- [LEARNING_ROADMAP.md](./LEARNING_ROADMAP.md) - Implementation phases and task sequence
+- [PROJECT_SPEC.md](/PROJECT_SPEC.md) - Functional specs (Core & Expansion).
+- [docs/DOMAIN_MODEL.md](/docs/DOMAIN_MODEL.md) - Core Domain business rules.
+- [LEARNING_ROADMAP.md](LEARNING_ROADMAP.md) - Task sequence and Phasing.
